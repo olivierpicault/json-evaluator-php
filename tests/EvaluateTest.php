@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class EvaluateTest extends TestCase
 {
-    private $testCases = [
-        // String
+    private $stringCases = [
         [
             'instance'  => [
                 'compare'   => [
@@ -65,7 +64,9 @@ final class EvaluateTest extends TestCase
             ],
             'expected'  => true
         ],
-        // Number
+    ];
+
+    private $numberCases = [
         [
             'instance' => [
                 'compare'   => [
@@ -112,6 +113,20 @@ final class EvaluateTest extends TestCase
             'instance' => [
                 'compare'   => [
                     'type'  => 'number',
+                    'value' => 4,
+                ],
+                'compareTo' => [
+                    'type'  => 'number',
+                    'value' => 1,
+                ],
+                'operator'  => '>',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'number',
                     'value' => 0,
                 ],
                 'compareTo' => [
@@ -121,6 +136,20 @@ final class EvaluateTest extends TestCase
                 'operator'  => '<',
             ],
             'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'number',
+                    'value' => 2,
+                ],
+                'compareTo' => [
+                    'type'  => 'number',
+                    'value' => 1,
+                ],
+                'operator'  => '<',
+            ],
+            'expected'  => false
         ],
         [
             'instance' => [
@@ -150,21 +179,261 @@ final class EvaluateTest extends TestCase
             ],
             'expected'  => false
         ]
-        // TODO: test booleans
-        // TODO: test expressions
-        // TODO: test fields
     ];
 
-    public function testBasics()
+    private $booleanCases = [
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'operator'  => '==',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => false,
+                ],
+                'operator'  => '==',
+            ],
+            'expected'  => false
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'operator'  => '!=',
+            ],
+            'expected'  => false
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => false,
+                ],
+                'operator'  => '!=',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'operator'  => '&&',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'operator'  => 'and',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => false,
+                ],
+                'operator'  => 'and',
+            ],
+            'expected'  => false
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => false,
+                ],
+                'operator'  => 'or',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'boolean',
+                    'value' => false,
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'operator'  => '||',
+            ],
+            'expected'  => true
+        ]
+    ];
+
+    private $expressionCases = [
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'expression',
+                    'value' => [
+                        'compare'   => [
+                            'type'  => 'string',
+                            'value' => 'olivier'
+                        ],
+                        'compareTo' => [
+                            'type'  => 'string',
+                            'value' => 'stéphane',
+                        ],
+                        'operator'  =>  '==',
+                    ]
+                ],
+                'compareTo' => [
+                    'type'  => 'boolean',
+                    'value' => true,
+                ],
+                'operator'  => '==',
+            ],
+            'expected'  => false
+        ]
+    ];
+
+    private $fieldCases = [
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'field',
+                    'value' => 'name',
+                ],
+                'compareTo' => [
+                    'type'  => 'string',
+                    'value' => 'olivier',
+                ],
+                'operator'  => '==',
+            ],
+            'expected'  => true
+        ],
+        [
+            'instance' => [
+                'compare'   => [
+                    'type'  => 'field',
+                    'value' => 'age',
+                ],
+                'compareTo' => [
+                    'type'  => 'number',
+                    'value' => 18,
+                ],
+                'operator'  => '>=',
+            ],
+            'expected'  => true
+        ]
+    ];
+
+    public function testString()
     {   
         $evaluator = new Evaluate();
 
-        $testCases = json_decode(json_encode($this->testCases, 0));
+        $testCases = json_decode(json_encode($this->stringCases, 0));
 
         foreach ($testCases as $testCase) {
             $this->assertEquals(
                 $testCase->expected,
                 $evaluator->evaluate($testCase->instance, [])
+            );
+        }
+    }
+
+    public function testNumber()
+    {   
+        $evaluator = new Evaluate();
+
+        $testCases = json_decode(json_encode($this->numberCases, 0));
+
+        foreach ($testCases as $testCase) {
+            $this->assertEquals(
+                $testCase->expected,
+                $evaluator->evaluate($testCase->instance, [])
+            );
+        }
+    }
+
+    public function testBooleans()
+    {
+        $evaluator = new Evaluate();
+
+        $testCases = json_decode(json_encode($this->booleanCases, 0));
+
+        foreach ($testCases as $testCase) {
+            $this->assertEquals(
+                $testCase->expected,
+                $evaluator->evaluate($testCase->instance, [])
+            );
+        }
+    }
+
+    public function testExpression()
+    {
+        $evaluator = new Evaluate();
+
+        $testCases = json_decode(json_encode($this->expressionCases, 0));
+
+        foreach ($testCases as $testCase) {
+            $this->assertEquals(
+                $testCase->expected,
+                $evaluator->evaluate($testCase->instance, [])
+            );
+        }
+    }
+
+    public function testFields()
+    {
+        $evaluator = new Evaluate();
+
+        $testCases = json_decode(json_encode($this->fieldCases, 0));
+
+        foreach ($testCases as $testCase) {
+            $this->assertEquals(
+                $testCase->expected,
+                $evaluator->evaluate($testCase->instance, ['name' => 'olivier', 'age' => 31])
             );
         }
     }
