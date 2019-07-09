@@ -15,7 +15,7 @@ class Evaluate
             $compare = $this->evaluateSingle($compare, $fields);
         }
         if ($instance->compareTo->type === 'expression') {
-            $compareTo = this.evaluateSingle($compareTo, $fields);
+            $compareTo = $this->evaluateSingle($compareTo, $fields);
         }
     
         if ($instance->compare->type === 'field') {
