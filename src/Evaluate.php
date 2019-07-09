@@ -53,7 +53,7 @@ class Evaluate
 
     public function evaluateMultiple(stdClass $instance, array $fields) {
         $result = null;
-        $operator = $instance->operator->toLowerCase();
+        $operator = strtolower($instance->operator);
         
         foreach ($instance->conditions as $condition) {
             if (property_exists($condition, 'conditions') && ($operator === ('and' || '&&'))) {
