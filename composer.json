@@ -1,5 +1,6 @@
 {
     "name": "olivierpicault/json-evaluator-php",
+    "description": "A package to evaluate a json structure",
     "authors": [
         {
             "name": "olivierpicault",

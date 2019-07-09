@@ -2,8 +2,6 @@
 
 namespace JsonEvaluator;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 use JsonEvaluator\Validate;
 use stdClass;
 
