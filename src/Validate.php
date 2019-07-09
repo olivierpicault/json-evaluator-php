@@ -33,10 +33,10 @@ class Validate
 
         // Check 'compareTo' node is present and is an object
         if (!property_exists($node, 'compareTo')) {
-            $errors[] = '"compare" property is missing';
+            $errors[] = '"compareTo" property is missing';
             $valid = false;
         } else if (!is_object($node->compareTo)) {
-            $errors[] = '"compare" must be an object';
+            $errors[] = '"compareTo" must be an object';
             $valid = false;
         }
 
